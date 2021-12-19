@@ -1,0 +1,24 @@
+sudo docker build --tag openweather:latest .
+
+sudo docker run -v test_volume_2:/app -it openweather:latest
+
+
+sudo docker run -v test_volume:/app -it fitec/webscapping:latest
+
+
+sudo docker volume create test_volume_2
+
+
+/var/lib/docker/volumes/test_volume/_data
+
+IPython.display
+IPython.core.display
+os
+csv
+json
+urllib.request
+os.path
+pandas.io.json
+
+
+

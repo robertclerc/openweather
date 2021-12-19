@@ -1,0 +1,5 @@
+IPython
+termcolor
+datetime
+unidecode
+pandas
