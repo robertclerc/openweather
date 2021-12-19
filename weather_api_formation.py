@@ -183,7 +183,12 @@ def WriteCSV(data,path_file):
 #         w.writeheader()
 #         w.writerow(data)
 
-
+        with open(path_file, 'w') as f:  # Just use 'w' mode in 3.x
+            w = csv.DictWriter(f, data.keys())
+            
+            
+            w.writeheader()
+            w.writerow(data)
 def  ReadCSV():
     try:
     #ouverture de fichier en mode lecture en specifiant le encodage
@@ -215,11 +220,16 @@ def getVilles():
         
 villes=getVilles()      
 
-
+print(villes)
 
 villes_france = villes[villes['country'] == "FR"] 
 
-
+# with open("coord.csv", 'w') as f:  # Just use 'w' mode in 3.x
+#     w = csv.DictWriter(f, villes.keys())
+    
+    
+#     w.writeheader()
+#     w.writerow(villes)
 
 liste_ville = sorted(list(set(villes_france['name'])))
 
@@ -241,21 +251,16 @@ if __name__ == '__main__':
         for ville_to_get in liste_ville : 
             
             city_name = ""
-
             
             liste_id_city = list(villes_france.id[villes_france["name"]==ville_to_get])
-
-            
             dic_ville_global = {}
             compteur_ville = 0
             
-            for id_to_get in liste_id_city : 
-                
+            for id_to_get in liste_id_city :        
                 
                 compteur_ville +=1
                 
-                city_id = id_to_get
-                
+                city_id = id_to_get     
 
                 url=url_builder(city_id,city_name,country)
 
@@ -265,46 +270,36 @@ if __name__ == '__main__':
 
                 data_orgnized=data_organizer(data)
 
-                dic_ville_global[compteur_ville] = data_orgnized
-
-              
+                dic_ville_global[compteur_ville] = data_orgnized             
             
                 WriteCSV(data_orgnized,path_1)
-
             
-            dic_ville_moyenne = {}
-            
+            dic_ville_moyenne = {}           
             
             dic_ville_moyenne["city"]=dic_ville_global[1]["city"]
-
             
             liste_temp = []
             
             liste_temp_max = []
             
-            liste_temp_min = []
+            liste_temp_min = []            
             
-            
-            for count in list(dic_ville_global.keys()) :
-                
+            for count in list(dic_ville_global.keys()) :             
 
                 liste_temp.append(dic_ville_global[count]["temp"])
                 
                 liste_temp_max.append(dic_ville_global[count]["temp_max"])
                 
                 liste_temp_min.append(dic_ville_global[count]["temp_min"])
-                
-                
+  
             dic_ville_moyenne["temp"] = round(sum(liste_temp)/len(liste_temp),2)
             
             dic_ville_moyenne["temp_max"] = round(sum(liste_temp_max)/len(liste_temp_max),2)
             
             dic_ville_moyenne["temp_min"] = round(sum(liste_temp_min)/len(liste_temp_min),2)
-            
-            
+             
             WriteCSV(dic_ville_moyenne,path_2)
-            
-
+ 
          
     except IOError:
         print('no internet')       
